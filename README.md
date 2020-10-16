@@ -1,2 +1,18 @@
 # chaeheestudio
-개발 가능 언어 : C, C++, Python, java, javascript, node.js 
+
+About me
+ - Chaehee Park, 1999, South Korea
+ - Sangmyung University, Seoul
+ 
+Language 
+ - C, C++, Java, Python, JavaScript, Node.js
+
+Interested in
+ - back-end development
+ - data analysis
+ - deep learning
+ - coding
+
+Project
+ - web
+ - program
