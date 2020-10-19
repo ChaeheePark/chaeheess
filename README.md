@@ -1,7 +1,7 @@
 # chaeheestudio
 
 About me
- - Chaehee Park, 1999, South Korea
+ - Chaehee Park, 1999, South Korea, Female
  - Sangmyung University, Seoul
  
 Language 
@@ -15,4 +15,6 @@ Interested in
 
 Project
  - web
- - program
+ - python program
+ - 
+
