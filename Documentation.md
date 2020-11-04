@@ -9,7 +9,9 @@
  4.   mergeSort
 
  5.   quickSort – 
-   ##### a) first or last element as a pivot  ##### b) random number as a pivot    ##### c) median of three partitioning as a pivot
+   ##### a) first or last element as a pivot  
+   ##### b) random number as a pivot    
+   ##### c) median of three partitioning as a pivot
 
  6.   시간 측정
 
