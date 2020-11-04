@@ -1,2 +1,2 @@
 # algorithm_2020
-algorithm programming ~ㅎㅎ
+정렬 / big-O
