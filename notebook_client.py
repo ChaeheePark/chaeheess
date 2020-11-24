@@ -41,7 +41,7 @@ wise_saying_notebook.add_note(note_1, 100) #해당 페이지에는 이미 노트
 
 for i in range(300):
     wise_saying_notebook.add_note(note_1, i)
-    #해당 페이지에는 이미 노트가 존재합니다. 4번출력 (1,2,4,100)에 노트 채워져있음
+    #해당 페이지에는 이미 노트가 존재합니다. 4번출 (1,2,4,100)
 
 print(wise_saying_notebook.get_number_of_all_pages()) #300
 
