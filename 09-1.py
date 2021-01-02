@@ -1,10 +1,8 @@
+import cv2
 import numpy as np
-A = np.array([[1,2], [3,4]])
-invA = np.linalg.inv(A)
-print(invA)
-# (A역행렬)A = A(A역행렬) = I 임을 확인
-# 파이썬에서 결과값이 근사값으로 출력된다.
-# np.round 함수를 사용
-print(np.dot(A, invA))
-print(np.round(np.dot(A, invA)))
-print(np.round(np.dot(invA, A)))
+img=cv2.imread('C:\\Users\\chaeh\\workspace3\\image.jpg',cv2.IMREAD_COLOR)
+height,width=img.shape[:2]
+dst=cv2.resize(img,(int(width*1.5),int(height*1.5)))
+
+cv2.imshow("result",dst)
+cv2.waitKey(0)
