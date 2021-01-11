@@ -10,12 +10,12 @@ Language
 
 Interested in
  - back-end development
- - data analysis
- - deep learning
- - coding
+ - data analysis & AI
+ - deep learning / machine learning
+ - coding test
 
 Project
- - web
+ - website
  - python program
- - 
+ - AI
 
