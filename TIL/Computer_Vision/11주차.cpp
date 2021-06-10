@@ -14,12 +14,16 @@ void InverseImage(BYTE* Img, BYTE* Out, int W, int H) {
 
 void SaveBMPFile(BITMAPFILEHEADER hf, BITMAPINFOHEADER hInfo, RGBQUAD* hRGB,
 	BYTE* Out, int W, int H, const char* FileName) {
-
 	FILE* fp = fopen(FileName, "wb");
 	fwrite(&hf, sizeof(BYTE), sizeof(BITMAPFILEHEADER), fp); //binary file은 byte 단위로 의미가 있음, 그래서 읽어올때와 다르게 쓸 때는 byte 단위로 써야 더 의미있음
 	fwrite(&hInfo, sizeof(BYTE), sizeof(BITMAPINFOHEADER), fp);
-	fwrite(hRGB, sizeof(RGBQUAD), 256, fp);
-	fwrite(Out, sizeof(BYTE), W * H, fp);
+	if (hInfo.biBitCount == 24) {
+		fwrite(Out, sizeof(BYTE), W * H * 3, fp);
+	}
+	else {
+		fwrite(hRGB, sizeof(RGBQUAD), 256, fp);
+		fwrite(Out, sizeof(BYTE), W * H, fp);
+	}
 	fclose(fp);
 
 }
@@ -635,6 +639,21 @@ void Obtain2DBoundingBox(BYTE* Temp, int W, int H, int* LUX, int* LUY, int* RDX,
 	}
 }
 
+void FillColor(BYTE* Image, int X, int Y, int W, int H, BYTE R, BYTE G, BYTE B) {
+	Image[Y * W * 3 + X * 3] = B; //x,y 를 3개씩 곱해야됨 Blue성분
+	Image[Y * W * 3 + X * 3 + 1] = G; //Green성분
+	Image[Y * W * 3 + X * 3 + 2] = R; // Red성분
+}
+
+void RGB2YCbCr(BYTE* Image, BYTE* Y, BYTE* Cb, BYTE* Cr, int W, int H) {
+	for (int i = 0; i < H; i++) {
+		for (int j = 0; j < W; j++) {
+			Y[i * W + j] = (BYTE)(0.299 * Image[i * W * 3 + j * 3 + 2]) + (0.587 * Image[i * W * 3 + j * 3 + 1]) + (0.114 * Image[i * W * 3 + j * 3]);
+			Cb[i * W + j] = (BYTE)(-0.1684 * Image[i * W * 3 + j * 3 + 2]) + (-0.3313 * Image[i * W * 3 + j * 3 + 1]) + (0.5 * Image[i * W * 3 + j * 3]) + 128;
+			Cr[i * W + j] = (BYTE)(0.5 * Image[i * W * 3 + j * 3 + 2]) + (-0.4187 * Image[i * W * 3 + j * 3 + 1]) + (-0.0813 * Image[i * W * 3 + j * 3]) + 128;
+		}
+	}
+}
 int main() {
 
 	//영상입력
@@ -643,24 +662,35 @@ int main() {
 	RGBQUAD hRGB[256];
 	FILE* fp;
 
-	fp = fopen("pupil1.bmp", "rb");
+	fp = fopen("fruit.bmp", "rb");
 	if (fp == NULL) {
 		printf("file not found!\n");
 		return -1;
 	}
+	BYTE* Image;
+	BYTE* Output;
+	BYTE* Temp;
+
 
 	fread(&hf, sizeof(BITMAPFILEHEADER), 1, fp); //14byte를 1번 읽어와서 hf에 저장해라
 	fread(&hInfo, sizeof(BITMAPINFOHEADER), 1, fp);
-	fread(hRGB, sizeof(RGBQUAD), 256, fp);
+	int W = hInfo.biWidth, H = hInfo.biHeight;
 	int ImgSize = hInfo.biWidth * hInfo.biHeight;
-
-	BYTE* Image = (BYTE*)malloc(ImgSize);
-	BYTE* Output = (BYTE*)malloc(ImgSize);
-	BYTE* Temp = (BYTE*)malloc(ImgSize);
-	fread(Image, sizeof(BYTE), ImgSize, fp);
+	if (hInfo.biBitCount == 24) { //트루컬러
+		Image = (BYTE*)malloc(ImgSize * 3);
+		Output = (BYTE*)malloc(ImgSize * 3);
+		Temp = (BYTE*)malloc(ImgSize * 3);
+		fread(Image, sizeof(BYTE), ImgSize * 3, fp);
+	}
+	else { //인덱스(그레이)
+		fread(hRGB, sizeof(RGBQUAD), 256, fp);
+		Image = (BYTE*)malloc(ImgSize);
+		Output = (BYTE*)malloc(ImgSize);
+		Temp = (BYTE*)malloc(ImgSize);
+		fread(Image, sizeof(BYTE), ImgSize, fp);
+	}
 	fclose(fp);
 
-	int W = hInfo.biWidth, H = hInfo.biHeight;
 	int Histo[256] = { 0 };
 	int AHisto[256] = { 0 };
 	//영상처리
@@ -678,22 +708,143 @@ int main() {
 	//MedianFiltering(Image, Output, W, H, 5);
 
 	//동공영역 가장큰 영역검출
-	Binarization(Image, Temp, W, H, 30);
-	InverseImage(Temp, Temp, W, H);
-	m_BlobColoring(Temp, H, W);
+	//Binarization(Image, Temp, W, H, 30);
+	//InverseImage(Temp, Temp, W, H);
+	//m_BlobColoring(Temp, H, W);
 
-	for (int i = 0; i < ImgSize; i++) Output[i] = Image[i];
+	//for (int i = 0; i < ImgSize; i++) Output[i] = Image[i];
 
-	int Cx, Cy;
-	Obtain2DCenter(Temp, W, H, &Cx, &Cy); //이진 영상의 무게중심
-	int LUX, LUY, RDX, RDY;
-	Obtain2DBoundingBox(Temp, W, H, &LUX, &LUY, &RDX, &RDY); //이진 영상의 외접사각형 좌표 추출
+	//int Cx, Cy;
+	//Obtain2DCenter(Temp, W, H, &Cx, &Cy); //이진 영상의 무게중심
+	//int LUX, LUY, RDX, RDY;
+	//Obtain2DBoundingBox(Temp, W, H, &LUX, &LUY, &RDX, &RDY); //이진 영상의 외접사각형 좌표 추출
+	//DrawRectOutline(Output, W, H, LUX, LUY, RDX, RDY);
+	//DrawCrossOutline(Output, W, H, Cx, Cy);
 
-	DrawRectOutline(Output, W, H, LUX,LUY,RDX,RDY);
-	DrawCrossOutline(Output, W, H, Cx, Cy);
 
+	//10주차
+	//특정위치에 색깔 채우기
+	/*for (int i = 0; i < W; i++) {
+		FillColor(Image, i, 200, W, H, 0, 255, 255);
+	}*/
+
+	//50,100 ~300,400 채우기
+	/*for (int i = 100; i <= 400; i++) {
+		for (int j = 50; j <= 300; j++) {
+			FillColor(Image, j, i, W, H, 255, 0, 255);
+		}
+	}*/
+
+	//가로 띠 만들기
+	//초기화
+	//for (int i = 0; i < H; i++) {
+	//	for (int j = 0; j < W; j++) {
+	//		Image[i * W * 3 + j * 3 ] = 0;
+	//		Image[i * W * 3 + j * 3 + 1] = 0;
+	//		Image[i * W * 3 + j * 3 + 2] = 0;
+	//	}
+	//}
+	////y좌표 기준 0~240 Red
+	//for (int i = 0; i < 240; i++) {
+	//	for (int j = 0; j < W; j++) {
+	//		Image[i * W * 3 + j * 3 + 2] = 255;
+	//	}
+	//}
+	////y좌표 기준 120~360 Green
+	//for (int i = 120; i < 360; i++) {
+	//	for (int j = 0; j < W; j++) {
+	//		Image[i * W * 3 + j * 3 + 1] = 255;
+	//	}
+	//}
+	////y좌표 기준 240~480 Blue
+	//for (int i = 240; i < 480; i++) {
+	//	for (int j = 0; j < W; j++) {
+	//		Image[i * W * 3 + j * 3] = 255;
+	//	}
+	//}
+
+	// 그라데이션 띠 만들기 blue->Yellow
+	//double wt;
+	//for (int a = 320; a <= 480; a++) {
+	//	for (int i = 0; i < W; i++) {
+	//		wt = i / (double)(W - 1);
+	//		Image[a * W * 3 + i * 3] = (BYTE)255 * (1 - wt);
+	//		Image[a * W * 3 + i * 3 + 1] = (BYTE)255 * wt;
+	//		Image[a * W * 3 + i * 3 + 2] = (BYTE)255 * wt;
+	//	}
+	//}
+	//// 그라데이션 띠 만들기 green->Magenta
+	//for (int a = 160; a <= 320; a++) {
+	//	for (int i = 0; i < W; i++) {
+	//		wt = i / (double)(W - 1);
+	//		Image[a * W * 3 + i * 3] = (BYTE)255 * wt;
+	//		Image[a * W * 3 + i * 3 + 1] = (BYTE)255 * (1 - wt);
+	//		Image[a * W * 3 + i * 3 + 2] = (BYTE)255 * wt;
+	//	}
+	//}
+	//// 그라데이션 띠 만들기 red->Cyan
+	//for (int a = 0; a <= 160; a++) {
+	//	for (int i = 0; i < W; i++) {
+	//		wt = i / (double)(W - 1);
+	//		Image[a * W * 3 + i * 3] = (BYTE)255 * wt;
+	//		Image[a * W * 3 + i * 3 + 1] = (BYTE)255 * wt;
+	//		Image[a * W * 3 + i * 3 + 2] = (BYTE)255 * (1 - wt);
+	//	}
+	//}
+
+	//VerticalFlip(Image, W * 3, H);
+
+
+	//11주차
+	////Red값이큰 화소만 masking
+	//for (int i = 0; i < H; i++) {
+	//	for (int j = 0; j < W; j++) {
+	//		if (Image[i * W * 3 + j * 3 + 2] > 140 && 
+	//			Image[i * W * 3 + j * 3 + 1] < 50 && 
+	//			Image[i * W * 3 + j * 3 ] < 100) {
+	//			Output[i * W * 3 + j * 3 ] = Image[i * W * 3 + j * 3];
+	//			Output[i * W * 3 + j * 3 + 1] = Image[i * W * 3 + j * 3 + 1];
+	//			Output[i * W * 3 + j * 3 + 2] = Image[i * W * 3 + j * 3 + 2];
+	//		}
+	//		else {
+	//			Output[i * W * 3 + j * 3] = Output[i * W * 3 + j * 3 + 1] = Output[i * W * 3 + j * 3 + 2] = 0;
+	//		}
+	//	}
+	//}
+
+	BYTE* Y = (BYTE*)malloc(ImgSize);
+	BYTE* Cb = (BYTE*)malloc(ImgSize);
+	BYTE* Cr = (BYTE*)malloc(ImgSize);
+	RGB2YCbCr(Image, Y, Cb, Cr, W, H);
+
+	for (int i = 0; i < H; i++) {
+		for (int j = 0; j < W; j++) {
+			if (Cb[i * W + j] < 140 && Cr[i * W + j]>200) {
+				Output[i * W * 3 + j * 3] = Image[i * W * 3 + j * 3];
+				Output[i * W * 3 + j * 3 + 1] = Image[i * W * 3 + j * 3 + 1];
+				Output[i * W * 3 + j * 3 + 2] = Image[i * W * 3 + j * 3 + 2];
+			}
+			else {
+				Output[i * W * 3 + j * 3] = Output[i * W * 3 + j * 3 + 1] = Output[i * W * 3 + j * 3 + 2] = 0;
+			}
+		}
+	}
+	//fp = fopen("Y.raw", "wb");
+	//fwrite(Y, sizeof(BYTE), W*H, fp); //binary file은 byte 단위로 의미가 있음, 그래서 읽어올때와 다르게 쓸 때는 byte 단위로 써야 더 의미있음
+	//fclose(fp);
+	//fp = fopen("Cb.raw", "wb");
+	//fwrite(Cb, sizeof(BYTE), W* H, fp); //binary file은 byte 단위로 의미가 있음, 그래서 읽어올때와 다르게 쓸 때는 byte 단위로 써야 더 의미있음
+	//fclose(fp);
+	//fp = fopen("Cr.raw", "wb");
+	//fwrite(Cr, sizeof(BYTE), W* H, fp); //binary file은 byte 단위로 의미가 있음, 그래서 읽어올때와 다르게 쓸 때는 byte 단위로 써야 더 의미있음
+	//fclose(fp);
+	
 	//결과출력
-	SaveBMPFile(hf, hInfo, hRGB, Output, W, H, "pupil1_output.bmp");
+	SaveBMPFile(hf, hInfo, hRGB, Output, W, H, "outputfruitwithYCBCR.bmp");
+
+	free(Y);
+	free(Cb);
+	free(Cr);
 	free(Image);
 	free(Output);
 	free(Temp);
