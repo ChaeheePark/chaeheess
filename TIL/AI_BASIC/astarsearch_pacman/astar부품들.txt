@@ -1,0 +1,50 @@
+■ target node 만나면 
+actions 리스트 리턴
+---------------------
+■ print "Start:", problem.getStartState()
+# (5,5)
+
+■ print "Is the start a goal?", problem.isGoalState(problem.getStartState())
+# False
+
+■ print "Start's successors:", problem.getSuccessors(problem.getStartState())
+# [((5, 4), 'South', 1), ((4, 5), 'West', 1)]
+---------------------
+■ PriorityQueue 
+OPEN = util.PriorityQueue()
+
+# ((coordinate of node, action to current node, cost to current node), priority)
+OPEN.push( (n0, [], 0), 0 )
+
+# 1) coordinate of node: 현재 노드 좌표
+# 2) actions to current node
+   # 현재 노드까지 오게된 경로. {동,서,남,북} 리스트
+   # ㄴ 초기 값: '부모노드에서 현재 노드'로의 방향
+   # ㄴ 갱신할 값: '부모노드의 actions' + [초기값]
+   #     ㄴ list 타입이므로, 초기값에 [] 씌울 것
+# 3) cost to current node
+   # 현재노드 까지 비용 g
+   # ㄴ 초기 값: '부모노드에서 현재 노드'까지 비용
+   # ㄴ 갱신할 값: g = 부모의 g + priority 초기값 로 계산할 것
+# priority 
+  # ㄴ priority Queue 정렬의 기준
+  # ㄴ 지정할 값: f = g+h 
+  #   ㄴ g: '시작노드 ~ 현재노드' 거리
+  #   ㄴ h: '현재노드 ~ 마지막노드' 거리(근사치)
+--------------------
+OPEN.isEmpty()
+
+n, n_actions, n_g = OPEN.pop()
+m, m_action, m_g = OPEN.pop()
+actions = n_actions + [m_action]
+
+■ yhk_manhattanHeuristic(child_n, problem)  # h^. heuristic cost
+
+---------------------
+1. 윈도우 cmd 실행
+2. python 2.7 설치
+3. 해당 경로로 이동(cd 이용)
+4. python pacman.py -l bigMaze -z .5 -p SearchAgent -a fn=astar
+python pacman.py -l bigMaze -z .5 -p SearchAgent -a fn=astar,heuristic=yhk_manhattanHeuristic
+
+python pacman.py
