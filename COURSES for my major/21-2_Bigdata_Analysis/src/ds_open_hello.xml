@@ -1,0 +1,10 @@
+<students>
+<student x="1">
+    <id>001</id>
+    <name>Kim</name>
+</student>
+<student x="2">
+    <id>002</id>
+    <name>Lee</name>
+</student>
+</students>
