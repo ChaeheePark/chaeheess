@@ -50,7 +50,7 @@ Loss Function - 원본 모델이 옷을 입은 사진과 generator을 거친 사
 
 ### 모델
 
-1. Data Set: 온라인 쇼핑몰을 대상으로 크롤링 (모델 사진 + 옷사진 + 합성할 옷사진) + 합성할 옷을 입은 모델 (Generator가 생성)
+1. Data Set: 온라인 쇼핑몰을 대상으로 크롤링(모델사진+ 옷사진) -> 원본, 합성할 옷을 입은 모델 (Generator가 생성)
 
 2. StyleGAN: Progressive growing GAN의 generator network에 초점을 맞추어 style mapping, style mixing을 progressive learning을 통해 성능을 향상시킴 
 
@@ -84,5 +84,17 @@ Loss Function - 원본 모델이 옷을 입은 사진과 generator을 거친 사
 
    
 
+   
+   
+   
+   
+   ## 관련 프로젝트 링크
+   
+   https://sun-pyo.github.io/virtualtryon/2021-03-01-Tryon1/ - 프로젝트 링크
+   
+   https://github.com/Charmve/VOGUE-Try-On - stylegan을 이용
+   
+   
+   
    
 
