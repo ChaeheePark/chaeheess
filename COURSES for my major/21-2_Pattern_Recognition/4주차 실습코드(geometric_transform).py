@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 plt.figure(figsize=(17, 5))
 
-img = cv2.imread('hand.jpg')
+img = cv2.imread('week3 #2/hand.jpg')
 img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 height = img.shape[0]
 width = img.shape[1]
