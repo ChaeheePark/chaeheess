@@ -2,7 +2,7 @@ import numpy as np
 import cv2
 
 
-def set_region_of_interest(img, vertices):
+def set_region_of_interest(img, vertices): #관심영역
     """
 
     :param img:       대상 이미지
@@ -32,20 +32,19 @@ def run(img):
     blur_img = cv2.GaussianBlur(gray_img, (7, 7), 0)
 
     # 3) 캐니 엣지 검출을 사용하여 엣지 영상 검출
-    edge_img=cv2.Canny(blur_img,70,140)
+    edge_img=cv2.Canny(blur_img,70,175)
 
     # 4) 관심 영역(ROI; Region Of Interest)을 설정하여 배경 영역 제외
     ROI_img=set_region_of_interest(edge_img,vertices)
 
     # 5) 허프 변환을 사용하여 조건을 만족하는 직선 검출
-    lines=cv2.HoughLinesP(ROI_img,1, np.pi / 180., 50, minLineLength=10, maxLineGap=30)
+    lines=cv2.HoughLinesP(ROI_img, 1, np.pi / 180., 10, minLineLength=15, maxLineGap=40)
 
     # 6) 찾은 직선들을 입력 이미지에 그리기
-    result=img
+    result=np.copy(img)
     for line in lines:
-        #print(line)
         for x1,y1,x2,y2 in line:
-            cv2.line(result,(x1,y1),(x2,y2),(0,0,255),6)
+            cv2.line(result,(x1,y1),(x2,y2),(0,0,255),5) # BGR 순서
 
     return result
 
