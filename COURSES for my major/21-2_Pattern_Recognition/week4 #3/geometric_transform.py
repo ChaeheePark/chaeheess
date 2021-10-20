@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 
-plt.figure(figsize=(17, 5))
+plt.figure(figsize=(17, 4))
 
 img = cv2.imread('hand.jpg')
 img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
