@@ -1,0 +1,16 @@
+﻿  9주차.cpp
+C:\Users\chaeh\Desktop\finalExam\finalExam\9주차.cpp(82,56): warning C4244: '=': conversion from 'double' to 'BYTE', possible loss of data
+C:\Users\chaeh\Desktop\finalExam\finalExam\9주차.cpp(209,43): warning C4244: '=': conversion from 'long' to 'BYTE', possible loss of data
+C:\Users\chaeh\Desktop\finalExam\finalExam\9주차.cpp(228,43): warning C4244: '=': conversion from 'long' to 'BYTE', possible loss of data
+C:\Users\chaeh\Desktop\finalExam\finalExam\9주차.cpp(248,43): warning C4244: '=': conversion from 'long' to 'BYTE', possible loss of data
+C:\Users\chaeh\Desktop\finalExam\finalExam\9주차.cpp(267,43): warning C4244: '=': conversion from 'long' to 'BYTE', possible loss of data
+C:\Users\chaeh\Desktop\finalExam\finalExam\9주차.cpp(287,43): warning C4244: '=': conversion from 'long' to 'BYTE', possible loss of data
+C:\Users\chaeh\Desktop\finalExam\finalExam\9주차.cpp(763,41): warning C4244: '=': conversion from 'double' to 'BYTE', possible loss of data
+C:\Users\chaeh\Desktop\finalExam\finalExam\9주차.cpp(765,45): warning C4244: '=': conversion from 'double' to 'BYTE', possible loss of data
+C:\Users\chaeh\Desktop\finalExam\finalExam\9주차.cpp(772,41): warning C4244: '=': conversion from 'double' to 'BYTE', possible loss of data
+C:\Users\chaeh\Desktop\finalExam\finalExam\9주차.cpp(773,45): warning C4244: '=': conversion from 'double' to 'BYTE', possible loss of data
+C:\Users\chaeh\Desktop\finalExam\finalExam\9주차.cpp(774,45): warning C4244: '=': conversion from 'double' to 'BYTE', possible loss of data
+C:\Users\chaeh\Desktop\finalExam\finalExam\9주차.cpp(781,41): warning C4244: '=': conversion from 'double' to 'BYTE', possible loss of data
+C:\Users\chaeh\Desktop\finalExam\finalExam\9주차.cpp(782,44): warning C4244: '=': conversion from 'double' to 'BYTE', possible loss of data
+C:\Users\chaeh\Desktop\finalExam\finalExam\9주차.cpp(783,45): warning C4244: '=': conversion from 'double' to 'BYTE', possible loss of data
+  finalExam.vcxproj -> C:\Users\chaeh\Desktop\finalExam\Debug\finalExam.exe
