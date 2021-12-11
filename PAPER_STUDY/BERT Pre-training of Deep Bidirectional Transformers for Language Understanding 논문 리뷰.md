@@ -44,7 +44,7 @@ BERT Transformer은 bidirectional self-attention을 사용
 
 ![image-20211123201057451](C:\Users\chaeh\AppData\Roaming\Typora\typora-user-images\image-20211123201057451.png)
 
-Input/Output Representations: single sentense / pair of sentence(q-a)
+Input/Output Representations: single sentence / pair of sentence(q-a)
 
 ![image-20211123204028223](C:\Users\chaeh\AppData\Roaming\Typora\typora-user-images\image-20211123204028223.png)
 
@@ -53,8 +53,6 @@ sep : pair 문장 들어갔을 때 나눠줌
 cls: 무조건 첫번째 vector
 
 ELMo, GPT는 left-to-right 또는 right-to-left 언어 모델을 사용하여 pre-training을 수행하지만, BERT는 이와 다르게 2가지의 새로운 unsupervised task로 pre-training을 수행
-
-
 
 **pre-training BERT**
 
@@ -111,3 +109,4 @@ pre-training에 비해 상대적으로 쉽다
 unsupervised pre-training 은 언어모델의 중요한 시스템
 
 bidirectional architecture 발견에 큰 의미
+
