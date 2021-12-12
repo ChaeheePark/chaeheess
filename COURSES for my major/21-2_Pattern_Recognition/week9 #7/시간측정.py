@@ -1,19 +1,17 @@
 import cv2
 import time
 
-filepath = 'rectangle.png'
-img = cv2.imread(filepath)
-gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+sift = cv2.xfeatures2d.SIFT_create() #SIFT 검출기 생성
+surf = cv2.xfeatures2d.SURF_create() #SURT 검출기 생성
 
-sift = cv2.xfeatures2d.SIFT_create()
-surf = cv2.xfeatures2d.SURF_create()
+for scale_factor in [0.5,1.0,2.0,10]:
 
-for i in range(4):
+    img = cv2.imread('rectangle.png')
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY) #gray image로 변환
+    gray = cv2.resize(gray, None, fx=scale_factor, fy=scale_factor) # resize
+    #fx,fy는 비율로 변환
 
-    li=[0.3,0.7,1.2,2.4]
-    resize_img = cv2.resize(gray, None, fx=li[i], fy=li[i])
-
-    print(">> (%d, %d)" % (resize_img.shape[0], resize_img.shape[1]))
+    print(">> (%d, %d)" % (gray.shape[0], gray.shape[1]))
 
     t1 = time.time()
     kpts = sift.detect(image=gray, mask=None)

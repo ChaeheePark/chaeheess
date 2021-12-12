@@ -1,4 +1,4 @@
- import cv2
+import cv2
 
 # 이미지 불러오기
 img_query = cv2.imread('box.png')           # query image
