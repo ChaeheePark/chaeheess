@@ -27,21 +27,26 @@ def mean_shift(X, bandwidth, n_iteration=20, epsilon=0.001):
         t = 0
         while True:
             
-            if (t>n_iteration): #t가 최대 반복 횟수를 초과한 경우
+            if (t>n_iteration): #종료조건1) t가 최대 반복 횟수를 초과한 경우
                 break
-            
-            a=0 
-            b=0           
-            for j in X:
-                a+=((j-centroid)*calc_weight(calc_euclidean_distance(centroid,j)/bandwidth, 'flat'))
-                b+=calc_weight(calc_euclidean_distance(centroid,j)/bandwidth, 'flat')
-            
-            if b==0:
+
+            #현재 중심점으로부터 bandwidth 내에 있는 샘플들을 기반으로 새로운 군집 중심점 계산
+            numerator=0
+            denominator=0
+            for sample in X:
+                distance=calc_euclidean_distance(centroid,sample)
+                weight=calc_weight(distance/bandwidth,'flat') #반경안에있는 점들만 참여
+                numerator+=((sample-centroid)*weight)
+                denominator+=weight
+
+            if denominator==0:
                 shift=0
             else:
-                shift=a/b
+                shift=numerator/denominator
+
             centroid+=shift
-                
+
+            #종료조건2) 수렴했으면 stop
             if calc_euclidean_distance(centroid,prev)<=epsilon:#중심점 이동이 수렴했을 경우
                 break
                 
