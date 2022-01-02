@@ -15,10 +15,12 @@ for scale_factor in [0.5,1.0,2.0,10]:
 
     t1 = time.time()
     kpts = sift.detect(image=gray, mask=None)
+    print(kpts)
     t2 = time.time()
     print("SIFT :", t2-t1, "sec")
 
     t1 = time.time()
     kpts = surf.detect(image=gray, mask=None)
+    print(kpts)
     t2 = time.time()
     print("SURF :", t2-t1, "sec\n")

@@ -26,7 +26,7 @@ matches = sorted(matches, key=lambda x: x.distance)  # distance를 기준으로 
 res = cv2.drawMatches(img1=img_query,
                       keypoints1=kp_query,
                       img2=img_train,
-                      keypoints2=kp_train,
+                      keypoints2=kp_query,
                       matches1to2=matches[:10],
                       outImg=None,
                       flags=cv2.DrawMatchesFlags_NOT_DRAW_SINGLE_POINTS)
