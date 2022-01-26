@@ -71,7 +71,7 @@ Gesticulator라는 최신 gesture generation model을 사용 - 의미의 정보�
 기본 Gesticulator model을 아래와 같은 조정을 통해 interactive agent에 맞춤 조정함
 
 1) audio feature->spectrogram (합성된 목소리에 더 나은 motion의 결과를 가짐)
-2) text 기록은 실정확한 단어 타이밍 정보가 포함되어 잇어 시간 설정에는 사용할 수 없음 -> 사용자와 상호작용 할 때, 음절수에 비례하는 음성 발화 길이로 근사치를 구함
+2) text 기록은 실정확한 단어 타이밍 정보가 포함되어 있어 시간 설정에는 사용할 수 없음 -> 사용자와 상호작용 할 때, 음절수에 비례하는 음성 발화 길이로 근사치를 구함
 3) BERT word embedding -> FastText로 대체 (특징 추출 시간을 줄이기 위해)
 
 
