@@ -92,4 +92,4 @@ Gesticulator라는 최신 gesture generation model을 사용 - 의미의 정보�
 
 state-of-the art data-driven gesture generation model을 embodied conversational agents와 결합한 framework를 소개했음
 
-앞으로 이 작업이 확장될 수 있는 방향은 많음- Gesticulator와 같은 결정론적 gesture generation model대신 확률론적 gesture generation model을 선택함으로써 다양한 gesture을 얻을 수 있음
+앞으로 이 작업이 확장될 수 있는 방향은 많음 - Gesticulator와 같은 결정론적 gesture generation model대신 확률론적 gesture generation model을 선택함으로써 다양한 gesture을 얻을 수 있음
