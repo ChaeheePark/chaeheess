@@ -58,6 +58,7 @@
 | [심층학습 프로젝트](https://github.com/smu-deep-learning-project) |  4월 초 ~ 6월 초  |             휴먼지능정보공학과              |         안구건조증 예방을 위한 눈 깜빡임 알림 서비스         |
 | [데이터 청년 캠퍼스 프로젝트](https://github.com/Data-campus-SloganAnalysis/Main) |  6월 말 ~ 8월 말  |                                             |   친환경 사업을 진행하는 기업 이미지에 대한 감성사전 구축    |
 | [LINC+ 사업단 산학공동기술개발과제 학부연구원](http://github.com/ChaeheePark/RCNN_PROJECT) | 6월 말 ~ 10월 말  | 휴먼지능정보공학과 <br>김동근 교수님 연구실 |                          RCNN 연구                           |
+| [2021-2학기 상생플러스](hgttp://github.com/ChaeheePark/NH_Bigdata_Contest) | 10월 초 ~ 11월 초 |             휴먼지능정보공학과              | [2021년(제2회) NH투자증권 빅데이터 경진대회](https://dacon.io/competitions/official/235798/overview/description) |
 | [기계학습 프로젝트](https://github.com/ChaeheePark/modelgirls) | 10월 초 ~ 12월 초 |      휴먼지능정보공학과, 컴퓨터과학과       |        VITON-HD를 이용한 무신사 제품 가상 피팅 서비스        |
 | [자연어처리 프로젝트](https://github.com/ChaeheePark/novelgirls) | 10월 초 ~ 12월 초 |      휴먼지능정보공학과, 컴퓨터과학과       |  BERT와 LSTM을 활용해 얼굴 묘사글을 통한 소설 작문 프로젝트  |
 
