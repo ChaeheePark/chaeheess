@@ -54,3 +54,13 @@ GAN은 훈련하기에 불안정하고 다층 GAN의 중간층 표현을 이해�
    CNN 의 맥락에서 deconvolution을 사용하고 최대 activation을 filtering 함으로써 네트워크에서 각 convolution filter의 대략적인 목적을 찾을 수 있다는 것을 보여줌
 
    또한 입력에 gradient descent 를 사용하면 필터의 subset을 활성화하는 이상적인 이미지를 조사할 수 있음
+
+## 3. APPROACH AND MODEL ARCHITECTURE
+
+CNN을 사용해서 이미지를 모델링하는 GAN을 확장하려는 과거의 시도는 성공하지 못함-> LAPGAN의 저자들은 반복적으로 upscale 저해상도 생성 이미지에 대한 대체 접근법을 개발
+
+CNN 아키텍처를 사용해서 GAN을 확장하려는 시도에도 어려움을 겪음 -> 광범위한 모델 탐색 끝에 다양한 데이터셋에 걸쳐 안정적인 교육을 제공하고 더 높은 해상도와 더 깊은 generator model을 학습할 수 있는 architecture을 찾음 : 최근 CNN architecture의 3가지 변경사항을 채택하고 수정함
+
+1) 결정론적 spatial pooling function을 경사형 convolution으로 대체해서 네트워크가 자체 공간을 downsampling을 학습 할 수 있도록 하는 전체 컨볼루션 네트워크
+2) 컨볼루션 features 위에 fully connected layer을 제거함
+3) Batch Normalization을 각 단위에 대한 입력값을 0으로 정규화
