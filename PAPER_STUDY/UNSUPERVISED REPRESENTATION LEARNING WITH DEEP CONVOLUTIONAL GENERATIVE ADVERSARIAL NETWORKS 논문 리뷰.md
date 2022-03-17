@@ -64,3 +64,55 @@ CNN 아키텍처를 사용해서 GAN을 확장하려는 시도에도 어려움�
 1) 결정론적 spatial pooling function을 경사형 convolution으로 대체해서 네트워크가 자체 공간을 downsampling을 학습 할 수 있도록 하는 전체 컨볼루션 네트워크
 2) 컨볼루션 features 위에 fully connected layer을 제거함
 3) Batch Normalization을 각 단위에 대한 입력값을 0으로 정규화
+
+Architecture guidelines for stable Deep Convolutional GANs
+
+- generator/discriminator 에 배치정규화 사용
+- fully connected layer 제거
+- generator 활성화함수 - 출력층 : Tanh, 나머지 : ReLU
+- discriminator 활성화함수 - LeakyReLU
+
+
+
+## 4. DETAILS OF ADVERSARIAL TRAINING 
+
+<img width="362" alt="image" src="https://user-images.githubusercontent.com/60170358/158720874-cda640c0-51a9-4ea9-960d-66241e811614.png">
+
+
+
+### 1) LSUN
+
+LSUN bedrooms dataset으로 학습
+
+generator가 훈련 이미지를 기억해버릴 가능성을 낮추기 위해 서로 매우 비슷한 near duplicates 인 이미지를 제거
+
+**유사중복이미지 제거과정에서 de-noising autoencoder를 사용**하였는데, 원본 이미지들을 오토인코더의 인코더에 input하여 coding 벡터로 인코딩하고 이 코딩값들이 서로 비슷한 관측들을 설정한 비율에 맞는 선까지 제거되도록 했다고 함.
+
+<img width="361" alt="image" src="https://user-images.githubusercontent.com/60170358/158721573-e5a6806c-9a98-421b-a454-7bed22aa4998.png">
+
+5 epochs  training
+
+
+
+### 2) FACES
+
+1만명의 사람에 대해 3백만장의 이미지
+
+OpenCV의 face detector를 돌려서 얼굴에 bounding box를 한 이미지들을 이용
+
+
+
+### 3) ImageNet 1-k
+
+비지도학습을 위한 자연이미지 소스로 활용
+
+
+
+## 5. EMPIRICAL VALIDATION OF DCGANS CAPABILITIES
+
+### 1) Classifying CIFAR-10 using GANs as a feature extractor
+
+DCGAN에 의해 학습된 representation의 품질을 평가하기 위해 이미지넷1k 데이터셋에 pretrain 시킨 뒤 discriminator의 모든 레이어들의 convolution feature들을 적절한 사이즈가 되게끔 pooling하고 concat하여 벡터를 만든뒤 SVM을 붙여 CIFAR-10 데이터셋에 대해 분류 TASK를 수행
+
+<img width="346" alt="image" src="https://user-images.githubusercontent.com/60170358/158736407-9288737e-69f5-4c37-b656-52183025b895.png">
+
