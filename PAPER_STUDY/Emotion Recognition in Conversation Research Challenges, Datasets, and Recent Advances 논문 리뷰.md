@@ -12,7 +12,7 @@ the presence of contextual cues, the temporality in speakers’ turns, or speake
 
 <img width="530" alt="image" src="https://user-images.githubusercontent.com/60170358/162694576-05f52e3b-9aa7-413c-9b4a-db0022a4ebd6.png">
 
-(같은 Yeah어도 다른 느낌)
+(같은 Yeah도 다른 느낌)
 
 
 
@@ -27,3 +27,7 @@ the presence of contextual cues, the temporality in speakers’ turns, or speake
 task-oriented or non-task oriented(채팅) -> 주제, 대화자의 성격, 논증 논리, 관점, 의도에 의해 통제
 
 <img width="272" alt="image" src="https://user-images.githubusercontent.com/60170358/162696567-757e2c26-389c-4776-88e0-96e20691b7d8.png">
+
+**이전 발화**는 과제 지향 대화 또는 화자의 감정 상태(채팅)에서 가장 큰 변화를 주기 때문에 가장 중요한 발화
+
+화자의 상태+화자의 의도+감정+이전발언 = 현재 발언
