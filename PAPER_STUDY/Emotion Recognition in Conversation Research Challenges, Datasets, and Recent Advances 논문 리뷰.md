@@ -132,3 +132,84 @@ Pb는 정서적으로 영향을 받지 않지만 Pa는 Pb에게 정서적으로 
 조이는 이전 발언에서 챈들러의 속임수를 확인하면 분노를 표출함
 
 감정 추론을 위한 분류법이나 태그 집합을 정의하는 것은 어렵고 사용 가능한 데이터 세트는 없지만 데이터 세트를 구축하면 미래의 대화 시스템이 의미 있는 논증 논리 및 담론 구조를 프레임화하여 인간과 같은 대화에 한 걸음 더 다가갈 수 있음
+
+
+
+## Datasets
+
+ERC task의 기본 목적은 말 마다 emotion label을 붙이는 것 
+
+ERC - IEMO-CAP, SEMAINE, Emotionlines, MELD, DailyDialog, EmoContext의 dataset 존재
+
+<img width="427" alt="image" src="https://user-images.githubusercontent.com/60170358/166103142-fa832afc-a224-492c-b148-7645276c11f3.png">
+
+SEMAINE dataset은 valence ([−1, 1]), arousal ([−1, 1]), expectancy ([−1, 1]) and power ([0,∞))을 사용
+
+
+
+## Recent Advances
+
+감정을 인식하는것은 다음 3개를 따라야 함:
+
+1. the utterance itself and its context defined by the inter-locutors’ preceding utterances in the conversation, as well as intent and the topic of the conversation, (발언 그 자체와 맥락은 대화 상대방의 앞선 발언, 의도, 대화의 주제로 정의되고)
+2. The speaker’s state comprising variables like personality and argumentation logic and (성격과 대화 논리와 같은 다양한 요소로 구성되는 화자의 상태)
+3. emotions expressed in the preceding utterances.(이전 발화에서 표현되었던 감정)
+
+
+
+a) Benchmarks and their drawbacks:
+
+ Conversational memory network (CMN)-> 화자별 컨텍스트 모델링을 위해 각 화자에 대한 개별 메모리를 활용하는 최초의 ERC 접근 방식
+
+Interactive conversational memory network (ICON)-> 모델 자아와 화자 간의 정서적 영향을 위해 상호 연결하는 네트워크
+
+Interaction-aware Attention Network (IANN)-> 화자간 모델링을 활용
+
+DialogueRNN -> 발화의 화자 정보를 고려하고, attention 메커니즘이 있는 계층적 다단계 RNN으로 자신과 화자 간 정서적 영향을 모델링
+
+<img width="553" alt="image" src="https://user-images.githubusercontent.com/60170358/166106623-a3193bc3-67ba-4985-be97-9fc3d83d8f1c.png">
+
+<img width="562" alt="image" src="https://user-images.githubusercontent.com/60170358/166106630-1de9e30d-bd93-4f4e-83d2-bfcdfbccf79b.png">
+
+<img width="562" alt="image" src="https://user-images.githubusercontent.com/60170358/166106696-68eca892-227f-4eb0-be1d-727cdd45ce22.png">
+
+<img width="287" alt="image" src="https://user-images.githubusercontent.com/60170358/166106702-f891575a-403e-4ad9-ae1a-e2acf4ce381d.png">
+
+가까운 발화는 문맥이 풍부하고 ERC performance는 미래의 발화를 사용가능할때 향상됨
+
+DialogueRNN은 과거 및 미래의 발언을 거의 동일한 빈도로 문맥으로 사용
+
+그러나 모든 네트워크들은 감정변화로 인해 말을 잘 생성하지 못함
+
+최근 ERC 문제를 해결하기 위해 EmotionX와 EmoContext이라는 두 가지 공유 작업이 구성됨
+
+다른 데이터 세트에 비해 EmoContext dataset는 세 번째 발화에 레이블을 지정하는 것이 목표인 세 개의 발화만으로 구성된 매우 짧은 대화를 가짐
+
+<img width="276" alt="image" src="https://user-images.githubusercontent.com/60170358/166107093-87bcf704-11a9-408b-a282-2945871aebf3.png">
+
+EmoContext dataset는 주로 LSTM을 사용하여 발화의 시간 순서를 캡슐화하는 bcLSTM 아키텍처를 사용한 컨텍스트 모델링에 활용
+<img width="275" alt="image" src="https://user-images.githubusercontent.com/60170358/166107256-50076863-f9f3-4580-b348-9c7ffaf1c8b7.png">
+
+HRLCE 프레임워크: 발화 인코더와 발화 인코더로부터 입력을 받는 컨텍스트 인코더로 구성됨
+
+각 발화를 나타내기 위해 HRLCE는 ELMo, Glove 및 Deepmoji 를 사용
+
+context encoder는 bc-LSTM framework에이어 multi head attention을 적용
+
+EmoContext dataset에만 HRLCE 프레임워크를 적용했지만 HRLCE는 다른 ERC dataset에 적용되도록 쉽게 조정할 수 있음
+
+EmoContext dataset은 speaker 정보를 활용하지 않음
+
+
+
+## Conclusion
+
+본 연구에서는 ERC의 최근 발전을 요약하고 이 연구 영역과 관련된 몇 가지 주요 연구 과제를 강조
+
+전반적으로,  효과적인 emotion-shift 인식 모델과 context encoder가 채팅 대화보다 상당한 성능 향상을 가져올 수 있으며, task-oriented 대화의 일부 측면도 개선할 수 있다고 추측
+
+더욱이, 화자별 감정 인식, multiparty ERC, 대화 빈정거림 감지와 같은 도전은 새로운 연구 방향을 형성할 수 있음
+
+또한, 긴 독백 동안 감정을 추적하기 위해 세밀한 화자 특유의 지속적인 감정 인식이 관심사가 될 수 있음
+
+본 논문에서 개략적으로 설명한 각각의 과제를 해결하면 AI가 가능한 대화 이해도가 향상될 뿐만 아니라, 감성적인 정보에 부응하여 대화 시스템의 성능을 향상시킬수 있음
