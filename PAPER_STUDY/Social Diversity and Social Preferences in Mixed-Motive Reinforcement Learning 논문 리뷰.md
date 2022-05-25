@@ -64,3 +64,33 @@ Markov game의 pure-common interest 강화 학습에 대한 최근 연구는 다
 혼합 동기 강화 학습에서 이질성의 영향을 조사하기 위해, 우리는 보상 공유를 위한 새롭고 일반화된 메커니즘을 도입->보상 공유 메커니즘인 사회적 가치 지향(SVO)을 사회 심리학에서 인간의 협력 행동에 대한 연구에서 도출
 
 ->여러 게임에 걸쳐 그룹 내에서 이러한 사회적 선호도의 이기종 분포가 동종 분포보다 더 일반화된 개별 정책을 생성한다는 것을 보여주고 SVO의 이질성이 어떻게 긍정적인 그룹 결과를 유지하는지 탐구-> 우리는 사회적 선호의 이러한 공식화가 에이전트가 각 환경과 관련된 특정 친사회적 행동을 발견하도록 이끈다는 것을 보여줌
+
+
+
+## 2 AGENTS
+
+### 2.1  Multi-agent reinforcement learning and Markov games
+
+n-player observable Markov game을 고려
+
+유한집합 S로 정의
+
+관찰 함수 O: S × {1, ...,n} → R^d
+
+각 플레이어에 대해 사용 가능한 동작 집합 A1, ., An
+
+N 플레이어에 의해 취해진 공동 동작으로부터 이산 분포의 집합으로 매핑되는 확률적 전이 함수 T: S × A1 × · · · · An → ( (S)가 부여
+
+각 주에서 플레이어는 a= (a1, ..., an) → A1, ..., ..., An을 공동 액션을
+
+각 에이전트 i는 독립적으로 환경을 경험하고 행동 정책 α(ai |oi)를 학습(자체 관찰 oi = O(s,i) 및  외적 보상 ri(s,a®)를 기반)
+
+장기 y-discounted payoff(식 1에 정의된)를 최대화 하기 위해 agent는 학습됨
+
+
+
+<img width="228" alt="image" src="https://user-images.githubusercontent.com/60170358/170282627-f9b91890-e1c5-4575-8a1c-0ecd4d2f2470.png"> (식1)
+
+여기서 Ui(st, ot, at)는 utility function이며, 단순성을 위해 o=(o1,..,on)
+
+표준 강화 학습에서 utility function은 환경에 의해 제공되는 외적 보상에 직접 매핑됨
