@@ -1,4 +1,4 @@
-# QMIX - Monotonic Value Function Factorisation for Deep Multi-Agent Reinforcement Learning 논문 리뷰
+# 1) QMIX - Monotonic Value Function Factorisation for Deep Multi-Agent Reinforcement Learning 논문 리뷰
 
 
 
@@ -246,3 +246,29 @@ QMIX는 에이전트별 action-value 함수로 다루기 쉬운 분해를 허용
 StarCraft II의 decentralised unit micromanagement task에 대한 결과는 QMIX가 independent Q-learning 뿐만 아니라 덜 정교한 joint state-value 함수 factorisation기능을 사용하는 다른 가치 기반 다중 에이전트 방법보다 최종 성능을 향상시킨다는 것을 보여줌
 
 QMIX를 많은 학습 에이전트와의 설정에 대한 더욱 공동체의 탐색 체계로 보완하는 것을 목표로 함
+
+
+
+# 2) QMIX-StarCraft 실행(https://github.com/Gouet/QMIX-Starcraft)
+
+smac, pysc2, starcraft ll 설치
+
+가상환경을 만들어서 agent 학습시킴<img width="703" alt="image" src="https://user-images.githubusercontent.com/60170358/172101764-eeebf472-09ec-4e02-bb08-e5cbd2a66ef1.png">
+
+<6개의 게임실행화면이 나타나서 학습되는 과정>
+
+<img width="587" alt="image" src="https://user-images.githubusercontent.com/60170358/172101424-0a9c1e23-7658-4d61-8ed9-12b00b2292fc.png">	<img width="558" alt="image" src="https://user-images.githubusercontent.com/60170358/172101538-e07e6c0e-5feb-4de5-8992-d108fce0a05e.png">
+
+<agent를 학습시키는 과정> -> episode 75000까지 학습시킴
+
+<img width="960" alt="image" src="https://user-images.githubusercontent.com/60170358/172102533-60bd26f5-fc2f-40cc-b3b2-ead09dabb847.png">
+
+<학습 코드>
+
+![image-20220606144259352](C:\Users\chaeh\AppData\Roaming\Typora\typora-user-images\image-20220606144259352.png)
+
+<학습시킨 AI를 launch>
+
+-> 첫번째 agent만 실행됨 
+
+-> 결국 starcraft 2를 실행시키진 못했지만 train 과정과 QMIX RL의 코드를 확인해 볼 수 있었음
