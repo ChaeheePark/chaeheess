@@ -99,19 +99,177 @@ reconstruction에 중요하지 않은 latent representation의 variation은 regu
 
 ## 3 Variational Autoencoders
 
-autoencoder의 표현 능력이 크게 향상된 것은 Variational Autoencoders(VAE) 모델 때문-> Variational Bayes (VB) Inference에 따르면, VAE는 확률적 분포를 통한 데이터 생성을 설명하는 generative model(확률론적 decoder와 동일)
+autoencoder의 표현 능력이 크게 향상된 것은 Variational Autoencoders(VAE) 모델 때문-> Variational Bayes (VB) Inference에 따르면, VAE는 확률적 분포를 통한 데이터 생성을 설명하는 generative model (확률론적 decoder와 동일)
 
 <img width="301" alt="image" src="https://user-images.githubusercontent.com/60170358/172160854-ce1151e2-760c-4089-8a43-b16a71cece2d.png"> 
 
-관찰되지 않은 random latent variable zi에 대해 조건화된 각 데이터 xi에 대한 generative model을 가정하며,  𝜃는 generative 분포를 지배하는 parameter
+각 data <img width="20" alt="image" src="https://user-images.githubusercontent.com/60170358/173175917-75d844ea-c600-422e-b4f2-d9b0f9f57364.png">는 관찰되지 않은 random latent variables <img width="19" alt="image" src="https://user-images.githubusercontent.com/60170358/173175931-545346f2-af45-440a-8bc8-0e63fe0c679c.png">로 조건화되어있다고 가정하고  𝜃는 generative 분포를 지배하는 parameter <-> 대칭적으로, 관찰된 <img width="20" alt="image" src="https://user-images.githubusercontent.com/60170358/173175917-75d844ea-c600-422e-b4f2-d9b0f9f57364.png">가 주어진 latent variable <img width="19" alt="image" src="https://user-images.githubusercontent.com/60170358/173175931-545346f2-af45-440a-8bc8-0e63fe0c679c.png">에 대한 대략적인 사후분포를 가정하고  𝜙는 확률론적 encoder을 지배하는 parameter
 
-대칭적으로, 우리는 recognition 표시된 기준 xi가 주어진 latent variable zi에 대한 대략적인 사후 분포를 가정하며, 이는 확률론적 encoder에 해당하며 매개 변수  𝜙에 의해 제어됨
-
-마지막으로, <img width="42" alt="image" src="https://user-images.githubusercontent.com/60170358/172166110-a42fe869-bff0-4fee-923d-452c8f735480.png">로 표시된 잠재 변수 zi에 대한 사전 분포를 가정
+마지막으로, <img width="42" alt="image" src="https://user-images.githubusercontent.com/60170358/172166110-a42fe869-bff0-4fee-923d-452c8f735480.png">로 표시된 latent variables <img width="19" alt="image" src="https://user-images.githubusercontent.com/60170358/173175931-545346f2-af45-440a-8bc8-0e63fe0c679c.png">대한 사전 분포를 가정
 
 매개변수 𝜃와 𝜙는 알 수 없으며 데이터에서 학습해야 함
 
-관찰된 latent variable zi는 recognition model <img width="65" alt="image" src="https://user-images.githubusercontent.com/60170358/172162096-86f900a1-0d3a-4814-82ea-be0734045588.png">에 의해 주어진 코드로 해석될 수 있음
 
 
+log-likelihood 는 각각 data points의 합 <img width="209" alt="image" src="https://user-images.githubusercontent.com/60170358/173175709-42a98872-7a11-4103-93a8-fe20d7fec942.png"> 으로 표현되고 각각 data points들은 식 (7)과 같이 나타냄
+
+<img width="367" alt="image" src="https://user-images.githubusercontent.com/60170358/173175534-2ed98baa-afa0-4dfe-82fb-c1210a0d9231.png">
+
+첫번째 항은 KL divergence이고, 두번째 항은 variational lower bound on the marginal likelihood(<img width="314" alt="image" src="https://user-images.githubusercontent.com/60170358/173177316-74b8a0b4-4031-4050-b8b2-ff1e078cb700.png">) 
+
+-> KL divergence는 음수가 아니기 때문에 lower bound를 최대화 하는 쪽으로 해야 사후분포의 approximation이 향상(매개변수 𝜃와 𝜙들을 조정하면서)
+
+
+
+### 3.1 The Reparameterization Trick
+
+ reparameterization trick은 <img width="65" alt="image" src="https://user-images.githubusercontent.com/60170358/173177827-0f63fee0-7c08-4c87-acc3-4cce4cdfa377.png">을 추정하기 위한 간단한 approch : encoder에서 나온 확률분포로 바로 sampling로 하면 back propagation이 불가능 (back propagation은 편미분을 구함으로 gradient를 구하는 것인데, z를 확률분포에서 그냥 sampling 한다면 chain rule이 중간에 끊기게 됨, 그래서 reparameterization trick사용) 
+
+<img width="374" alt="image" src="https://user-images.githubusercontent.com/60170358/173178083-e3be983f-4275-4ae8-8897-844b9d37a932.png">
+
+<img width="337" alt="image" src="https://user-images.githubusercontent.com/60170358/173178720-a19d5d6f-d8c8-48c3-b051-058be1e516c2.png">
+
+variational loss function을 위의 식 (13)과 같이 바꿔줌
+
+
+
+### 3.2 Example: The Case of Normal Distribution
+
+<img width="48" alt="image" src="https://user-images.githubusercontent.com/60170358/173178931-29865ed8-70ac-4d9b-a01a-fd951cb77c7b.png">를 gaussian 분포로 모사하는게 보통적이지만, 
+
+<img width="282" alt="image" src="https://user-images.githubusercontent.com/60170358/173179005-3a4486e8-37ad-4dcc-8653-477f0e80506d.png">를 통해  reparametrisation trick 를<img width="63" alt="image" src="https://user-images.githubusercontent.com/60170358/173179016-b61d39cd-ce60-4de4-8c09-77bfdbb5bd6b.png">가능하게 해야함
+
+이때 <img width="63" alt="image" src="https://user-images.githubusercontent.com/60170358/173179016-b61d39cd-ce60-4de4-8c09-77bfdbb5bd6b.png">은 normal distribution임
+
+![image-20220611170221631](C:\Users\chaeh\AppData\Roaming\Typora\typora-user-images\image-20220611170221631.png)
+
+전체 network의 loss function은 식 (15)와 같게 됨
+
+
+
+### 3.3 Disentangled Autoencoders
+
+<img width="373" alt="image" src="https://user-images.githubusercontent.com/60170358/173179638-f47478e3-7e71-4dfa-9441-c0c848e453c4.png">
+
+식 (9)에서 오른쪽 항은 sample의 reconstruction 능력을 나타내고, 왼쪽 항은 regularization으로 행동함	
+
+disentangled autoencoder은 varational autoencoder을 포함함->  𝛽는 KL divergence의 곱셈 인자로 추가됨
+
+![image-20220611172110746](C:\Users\chaeh\AppData\Roaming\Typora\typora-user-images\image-20220611172110746.png)
+
+최대화 계수는 식 (16)과 같음
+
+실제로, 사전 <img width="35" alt="image" src="https://user-images.githubusercontent.com/60170358/173179905-6f1406bc-060c-40ed-bbf4-77de72b71e1e.png">은 일반적으로 standard multivariate normal distribution으로 설정됨 
+
+-> 모든 feature은 상관 관계가 없으며, KL divergence는 latent feature distribution을 상관관계가 낮은 것으로 규제함
+
+
+
+## 4 Applications of autoencoders
+
+autoencoder을 통해 표현을 학습하는 것은 다양한 응용 프로그램에 사용될 수 있음
+
+
+
+### 4.1 Autoencoders as a generative model
+
+variational autoencoder는 확률적 분포를 통한 데이터 생성을 설명하는 generative model
+
+<img width="379" alt="image" src="https://user-images.githubusercontent.com/60170358/173185555-1e5e0b6b-fa63-4da1-9302-c73d01a3f2fd.png">
+
+variational autoencoder에 의해 생성된 이미지이고, MNIST 데이터 세트에 대해 학습
+
+
+
+### 4.2 Use of autoencoders for classification
+
+autoencoder는 unsupervised 방식으로 으로 훈련되고 있지만, 분류 결과를 개선하기 위해 semi-supervised에서도 사용됨
+
+1) autoencoder는 이전 섹션에서 설명한 것처럼 감독되지 않은 방식으로 훈련->  decoder을 한쪽에 두고 encoder을 분류 모델의 첫 번째 부분으로 사용
+
+   support vector machine 인코더의 출력을 훈련
+
+   domain이 high dimensional 이고 layer-by-layer training이 불가능하면, non linearity 를 추가하기 전에 각 계층을 linear layer로 훈련
+
+2) classification newtork에 대한 regularization 기술로 autoencoder을 사용
+
+   classification newtork(라벨이 지정된 데이터로 훈련됨)와 decoder network(라벨이 지정된 데이터 또는 레이블이 지정되지 않은 데이터를 재구성하도록 훈련됨)
+
+   <img width="363" alt="image" src="https://user-images.githubusercontent.com/60170358/173186206-eeca6e15-6a9d-47db-900b-ab9555f85ab5.png">
+
+   autoencoder을 regularization으로 사용
+
+
+
+### 4.3 Use of autoencoders for clustering
+
+cluastering은 각 그룹의 샘플이 서로 유사하고 다른 그룹의 샘플과 다르도록 데이터를 그룹으로 분할하는 것이 목표인 unsupervised task-> 대부분의 clustering algorithm은 데이터의 차원에 민감하고 차원의 저주 문제 존재
+
+데이터에 low-dimensional latent representation이 있다고 가정하면, 더 적은 feature로 구성된 데이터에 대한 표현을 계산하기 위해 autoencoder을 사용할 수 있음
+
+autoencoder는 분류에서의 사용과 유사하게 decoder는 한쪽에 놓이고, 각 데이터 포인트의 latent representation(encoder output)이 유지되고 주어진 clustering(K-means)에 대한 입력으로 사용됨
+
+
+
+### 4.4 Use of autoencoders for anomaly detection
+
+anomaly detection은 unsupervised task-> 정상 데이터 예제만 주어진 정상 profile을 학습한 다음 정상 profile에 맞지 않는 sample을 이상 징후로 식별
+
+부정 행위 탐지, 시스템 모니터링 등과 같은 다양한 응용 프로그램에 적용될 수 있음
+
+
+
+### 4.5 Use of autoencoders for recommendation systems
+
+추천 시스템(Recommendor System)은 사용자 선호도 또는 선호도를 예측하고자 하는 모델 또는 시스템
+
+Recommendor System은 전자 상거래 웹 사이트, 애플리케이션 스토어등에 사용-> 권장 시스템 모델의 고전적인 접근 방식은 Collaborative Filtering(CF) : CF에서 사용자 기본 설정은 다른 사용자 기본 설정의 정보를 기반으로 추론(과거에 유사한 선호도를 보인 사람들은 미래에 비슷한 선호도를 보일 것)
+
+추천 시스템용 autoencoder은 AutoRec model : user-based AutoRec/item-based AutoRec 두가지가 존재: U-AutoRec은 특정 사용자에 대한 lower dimensional representation을 학습하는 반면, I-AutoRec에서는 autoencoder 특정 항목에 대한 lower dimensional representation을 학습
+
+
+
+### 4.6 Use of autoencoders for dimensionality reduction
+
+텍스트나 이미지와 같은 real data는 sparse high-dimensional representation을 사용-> 차원성의 저주로 이어짐
+
+차원 축소의 목표는 lower dimensional manifold("intrinsic dimensionalisty") 공간을 배우는것
+
+Principal Component Analysis(PCA): data point를 저차원 공간에 선형 투영하여 sqaure reconstruct loss를 최소화
+
+서로 다른 objectives를 사용: Linear Discriminant Analysis(LDA)은 서로 다른 클래스의 데이터를 구별하는 데 가장 적합한 선형 부분 공간을 찾는 supervised method, ISOMAP은 원래 공간에서 쌍별 데이터 사이의 geodesic distance를 유지하여 저차원 매니폴드를 학습
+
+
+
+## 5  Advanced autoencoder techniques
+
+autoencoder은 일반적으로 입력과 출력 사이의 차이에 해당하는 loss function에 의해 훈련-> 위와 같이 autoencoder의 장점 중 하나는 다양한 용도에 latent representation을 사용할 수 있다는 것
+
+
+
+### 5.1 Autoencoders and generative adversarial networks
+
+Variational auto encoder는 약간 흐릿한 이미지를 생성하는 MSE에서 훈련되지만 출력을 제어하기 위해 latent variable 추론을 허용
+
+데이터를 합성하는 자동 인코더의 대체 생성 모델은 GAN(Generative Adversarial Networks)-> generator과 discriminator는 서로 경쟁하도록 강제하는 loss function을 사용해 함께 훈련되어 생성 데이터의 품질을 향상시킴
+
+adversarial autoencoder에서, VAE 손실 함수의 KL divergence는 사전과 추정된 사후를 구별하는 discriminator로 대체됨
+
+VAE loss의 reconstruction loss는 discriminator로 대체되며, 이는 decoder을 generator와 병합하도록 함
+
+GAN의 discriminator은 shared weights를 통해 encoder와 결합되어 GMM이 추론을 위해 latent space을 편리하게 모델링함
+
+
+
+### 5.2 Adversarially learned inference
+
+GAN의 단점 중 하나는 mode collapse인데, autoencoder와 달리 모든 데이터가 아닌 데이터의 일부만 latent space를 통해 나타낼 수 있음
+
+Adversarially Learned Inference(ALI)에는 VAE와 GANS의 아이디어를 병합하여 장단점을 절충하려는 시도-> decoder를 "속이기" 위해 결과를 출력하도록 강제됨<img width="439" alt="image" src="https://user-images.githubusercontent.com/60170358/173190907-349ef34a-db4b-4af0-8ae3-b30243089934.png">
+
+ALI가 이미지에서 의미 있는 변경을 얻기 위해 특정 feature을 변경하는 방법에 대한 예(모델은 CelebA 데이터 세트에 대해 훈련)
+
+->각 이미지에 40개의 서로 다른 속성이 포함되어 있으며, ALI에는 encoder, decoder, discriminator에 선형적으로 포함
+
+->각 행에는 여러 열에 걸쳐 일정하게 유지되는 속성의 부분 집합이 존재
 
