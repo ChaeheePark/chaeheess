@@ -1,4 +1,4 @@
-# Autoencoders 논문 리뷰
+# Autoencoders(Dor Bank, Noam Koenigstein, Raja Giryes) 논문 리뷰
 
 ## Abstract
 
@@ -6,7 +6,7 @@
 
 
 
-## 1 Autoencoders
+## 1 Autoencoders	
 
 input을 reconstruct을 하도록 학습시키는 neural network
 
@@ -269,7 +269,74 @@ Adversarially Learned Inference(ALI)에는 VAE와 GANS의 아이디어를 병합
 
 ALI가 이미지에서 의미 있는 변경을 얻기 위해 특정 feature을 변경하는 방법에 대한 예(모델은 CelebA 데이터 세트에 대해 훈련)
 
-->각 이미지에 40개의 서로 다른 속성이 포함되어 있으며, ALI에는 encoder, decoder, discriminator에 선형적으로 포함
+-> 각 이미지에 40개의 서로 다른 속성이 포함되어 있으며, ALI에는 encoder, decoder, discriminator에 선형적으로 포함
 
-->각 행에는 여러 열에 걸쳐 일정하게 유지되는 속성의 부분 집합이 존재
+-> 각 행에는 여러 열에 걸쳐 일정하게 유지되는 속성의 부분 집합이 존재
 
+
+
+### 5.3 Wasserstein autoencoders
+
+GAN은 이미지를 generate하지만 inference를 제공하지 않으며 학습 안정성과 관련하여 많은 고유한 문제를 갖음
+
+Wasserstein-GAN(WGAN)은 Wasserstein distance를 사용하여 많은 문제를 풀 수 있음
+
+Wasserstein distance는 Optimal Transport distance의 특별한 경우이고 <img width="29" alt="image" src="https://user-images.githubusercontent.com/60170358/173232159-688e3c22-4e0e-4a39-a9a2-9296cd5cb173.png">와 <img width="23" alt="image" src="https://user-images.githubusercontent.com/60170358/173232168-1bf11efe-c687-4bab-8b10-a03ecd2260d5.png">사이의 거리를 재는 것
+
+<img width="330" alt="image" src="https://user-images.githubusercontent.com/60170358/173232189-5f6bfcfe-5fa3-4783-85bf-438e4e212e2c.png">
+
+c(X,Y)는 cost function, p-th root of Wc는 p-Wassertein distance라고 부름
+
+WAE(Wasserstein autoencoders)에서 autoencoder의 loss function을 수정하여 식(21) 과 같은 objective function을 만듬
+
+<img width="400" alt="image" src="https://user-images.githubusercontent.com/60170358/173233330-1784012b-3738-4b39-bf79-04d0af8521f7.png">
+
+-> Q는 encoder이고 G는 decoder
+
+-> 왼쪽 부분은 reconstruction loss로 output 분포와 sample 분포 사이를 penalize / 오른쪽 부분은 latent space 분포에서 사전 분포 사이를 penalize
+
+<img width="455" alt="image" src="https://user-images.githubusercontent.com/60170358/173233573-07c3ecd1-92f3-4b65-8ecd-6d48580cc945.png">
+
+-> VAE와 WAE 사이의 정규화 차이
+
+-> VAE와 WAE는 2가지 term을 최소화: reconstruction cost와 regularizer penalizing  discrepancy(encoder Q로 유도된 분포와 Pz사이)
+
+-> 그림 (a) : VAE는 𝑄(𝑍|𝑋 = 𝑥) 를 강제로 Px에서 도출된 모든 입력 예에 대해 Pz와 일치시킴  -> 모든 빨간색 공은 흰색 모양으로 표시된 Pz와 일치해야함 빨간 공들의 intersecting으로 인해 reconstruction 문제가 생김
+
+-> 그림 (b) : WAE는 Pz와 일치시키기 위해 연속적인 mixture 𝑄z:= ∫ 𝑄(𝑍|𝑋)𝑑𝑃x 를 사용-> 초록색 공으로 표시됨, 서로 다른 exmaple의 latent code는  서로 멀리 떨어져 있게 되어 더 나은 reconstruction을 촉진
+
+
+
+### 5.4 Deep feature consistent variational autoencoder
+
+autoencoder을 최적화하기 위해 다른 loss function 제시: 원본 영상과 reconstruction 영상이 주어지면 픽셀 차이에서 norm을 측정하는 대신 픽셀 간의 상관 관계를 고려하는 다른 측정이 사용됨
+
+Pretrained classification network는 autoencoder에 대한 loss function을 생성하는데 사용함-> 영상을 encoding 및 decoding 한 후 original과 reconstructed 영상이 모두 pretrained network의 input으로 삽입됨
+
+pretrained network 결과가 높은 정확도로 나타나고 학습된 도메인이 autoencoder의 도메인과 크게 다르지 않다고 가정하면, 각 layer는 input image의 성공적인 feature extractor로 볼 수 있고,  두 이미지 간의 차이를 직접 측정하는 대신 network layer에서 두 이미지 간의 차이를 측정할 수 있음
+
+
+
+### 5.5 Conditional image generation with PixelCNN decoders
+
+autoencoder와 PixelCNN사이의 구성을 제안-> PixelCNN에서 이미지의 픽셀은 임의의 순서에 따라 정렬되고,각 픽셀이 이전 픽셀의 출력과 입력의 결과인 출력이 순차적으로 형성됨
+
+image의 local sptial statistics를 고려함(예를 들어, 배경 픽셀 아래에 다른 배경 픽셀을 가질 확률이 전경 픽셀을 가질 확률보다 높음): 입력 픽셀 정보 외에 spatial ordering을 사용하면 흐릿한 픽셀을 얻을 가능성이 줄어듬
+
+이후에, local statistics는 RNN의 사용으로 대체되었지만, 픽셀 생성에 대한 동일한 개념은 남음(decoder을 순차적으로 출력 이미지를 생성하는 픽셀 CNN network로 구성하도록 설정하여 autoencoder와 결합)
+
+<img width="318" alt="image" src="https://user-images.githubusercontent.com/60170358/173235224-a9daeb19-e911-4665-bd97-95c424223769.png">
+
+-> 위-> 아래, 오른쪽-> 왼쪽으로 생성되는 pixelCNN generation network (다음에 생성되는 픽셀은 노란색 픽셀이고, RNN은 숨겨진 상태와 빨간색 사각형의 녹색 픽셀 정보를 고려)
+
+
+
+## 6 Conclusion
+
+처음에 정의된 architecture가 입력의 meaningful representation을 학습하고 generative process를 모델링하는 핵심 능력을 가진 강력한 모델로 어떻게 진화했는지를 보여주는 autoencoder을 제시
+
+autoencoder fall backs중 하나는, reconstruction error에 출력이 얼마나 현실적인지 포함하지 않는다는 것
+
+generative prosses를 모델링하는 경우, variational 과 disentangled autoencoder의 성공에도 불구하고 hidden state의 size와 distribution을 선택하는 방법은 실험기반이며, reconstruction error를 고려하고, 사후 훈련에서 hidden state를 변화시킴 -> 이러한 parameter을 더 잘 설정하는 향후 연구가 필요
+
+**autoencoder의 목표는 compressed and meaningful 한 representation을 얻는 것**
